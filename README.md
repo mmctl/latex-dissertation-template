@@ -201,11 +201,49 @@ At a high level, the purpose of each included directory and file is as follows:
 
 ## Features
 
-- **Document layout**
+- Document layout
   - Dissertation-oriented layout based on KOMA-Script’s `scrbook` class.
   - B5, two-sided setup, with a built-in guess for binding correction.[^2]
   - Configured headings, chapter openings, running heads, captions, margin
     equation tags, and microtypography.
+- Fonts, language, and quotations
+  - LuaLaTeX-based font setup using Libertinus.
+  - STIX Two calligraphic, script, and fraktur math alphabets.
+  - Multilingual support via `polyglossia` and quotations via `csquotes`.
+- Floating environments and graphics
+  - Consistent setup for figures, tables, algorithms, and listings.
+  - Matching captions, float behavior, and content lists.
+  - Support for regular graphics, TikZ, `forest`, and optional TikZ
+    externalization.
+- Mathematics and formal statements
+  - Mathematical setup based on `mathtools`, including margin equation
+    numbering.
+  - Theorem-like environments for theorems, lemmas, propositions, corollaries,
+    axioms, definitions, remarks, and claims.
+- Pseudocode, code, and technical writing support
+  - Pseudocode support via `algpseudocodex` and a custom `algorithmicframed`
+    environment.
+  - `cryptocode` styling adjusted to better match the main pseudocode setup.
+  - Default `listings` configuration for source-code listings.
+- Referencing, bibliography, and metadata
+  - Hyperlinks and automatic cross-referencing via `hyperref` and `cleveref`.
+  - Bibliography support via `biblatex` and `biber`.
+  - PDF metadata configured through `\hypersetup`.
+- Drafting, notes, and helper macros
+  - Todo notes, a corresponding todo list, layout visualization, and dummy text.
+  - Margin notes.
+  - Small helper macros for, e.g., simultaneous text sub- and superscripts and
+    context-aware outlined text/math boxes.
+- Colors
+  - Default color setup via `colorblind`.
+  - Colorblind-friendly remappings of built-in color names.
+- Project structure and build tooling
+  - Modular project structure with separate files for package setup, macros,
+    TikZ setup, listings setup, front matter, and back matter.
+  - Local build workflow centered around LuaLaTeX, `latexmk`, and `biber`.
+  - GitHub Actions workflow for automatic PDF builds and optional tagged/manual
+  releases.
+
 
 [^2]: Binding correction depends on several factors, including the paper type,
     the number of pages, and the binding method. This template uses a default
@@ -214,51 +252,6 @@ At a high level, the purpose of each included directory and file is as follows:
     verify this value for your specific case; see the KOMA-Script manual for
     more information on binding correction.
 
-- **Fonts, language, and quotations**
-  - LuaLaTeX-based font setup using Libertinus.
-  - STIX Two calligraphic, script, and fraktur math alphabets.
-  - Multilingual support via `polyglossia` and quotations via `csquotes`.
-
-- **Floating environments and graphics**
-  - Consistent setup for figures, tables, algorithms, and listings.
-  - Matching captions, float behavior, and content lists.
-  - Support for regular graphics, TikZ, `forest`, and optional TikZ
-    externalization.
-
-- **Mathematics and formal statements**
-  - Mathematical setup based on `mathtools`, including margin equation
-    numbering.
-  - Theorem-like environments for theorems, lemmas, propositions, corollaries,
-    axioms, definitions, remarks, and claims.
-
-- **Pseudocode, code, and technical writing support**
-  - Pseudocode support via `algpseudocodex` and a custom `algorithmicframed`
-    environment.
-  - `cryptocode` styling adjusted to better match the main pseudocode setup.
-  - Default `listings` configuration for source-code listings.
-
-- **Referencing, bibliography, and metadata**
-  - Hyperlinks and automatic cross-referencing via `hyperref` and `cleveref`.
-  - Bibliography support via `biblatex` and `biber`.
-  - PDF metadata configured through `\hypersetup`.
-
-- **Drafting, notes, and helper macros**
-  - Todo notes, a corresponding todo list, layout visualization, and dummy text.
-  - Margin notes.
-  - Small helper macros for, e.g., simultaneous text sub- and superscripts and
-    context-aware outlined text/math boxes.
-
-- **Colors**
-  - Default color setup via `colorblind`.
-  - Colorblind-friendly remappings of built-in color names.
-
-- **Project structure and build tooling**
-  - Modular project structure with separate files for package setup, macros,
-    TikZ setup, listings setup, front matter, and back matter.
-  - Local build workflow centered around LuaLaTeX, `latexmk`, and `biber`.
-  - GitHub Actions workflow for automatic PDF builds and optional tagged/manual
-    releases.
-  
 ## Acknowledgments
 
 WIP
