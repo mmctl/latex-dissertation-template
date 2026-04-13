@@ -1,0 +1,337 @@
+% Class %
+% KOMA-Script's scrbook (see https://ctan.org/pkg/koma-script)
+% Book/paper size: 170 mm x 240 mm; B5, approx. 0.81 * A4 (see guidelines)
+\documentclass[%
+paper=b5,pagesize=auto, % B5 format and setting correct page values
+fontsize=10pt,twoside, % Font size and sided-ness
+BCOR=5mm,DIV=calc, % Binding correction and number of page rows/columns for ratios
+headinclude=true,footinclude=false,mpinclude=false, % consideration of header/footer/marginalia in text body
+headsepline=true,footsepline=false, % separation line between header/footer and text
+]{scrbook}
+
+
+% Fundamentals %
+% Settings
+%% Remove the restriction of aligning the bottom-most material between pages.
+%% While enforcing this restriction (by means of \flushbottom) is typically
+%% viewed as the typographically correct approach for books, it creates a lot of
+%% unclean vertical stretching, especially when there is a lot of
+%% displayed/floating material. Synchronizing and coordinating the material in a
+%% way that removes (most) of this stretching, although probably possible, may
+%% be unrealistically arduous relative to the gain. As such, we opt to remove
+%% this restriction here.
+\raggedbottom
+
+% Packages
+%% KOMA-Script
+\usepackage{scrlayer-scrpage} % Layer design of pages
+\usepackage{scrlayer-notecolumn} % Note columns (uses scrlayer-scrpage)
+
+%% Patching
+\usepackage{etoolbox} % see https://ctan.org/pkg/etoolbox
+\usepackage{xpatch} % see https://ctan.org/pkg/xpatch
+
+%% Text alignment (ragging/flushing)
+% Ragging commands with support for hyphenation
+% (see https://ctan.org/pkg/ragged2e)
+\usepackage{ragged2e}
+
+
+% Global formatting (before package setup) %
+%% Set base font used for section headings/titles (no font-specific format)
+% \setkomafont{disposition}{\normalfont\normalcolor\scshape}
+
+% Title page
+%% Font for title and author
+\setkomafont{title}{\normalfont\normalcolor\scshape\bfseries\huge}
+\setkomafont{author}{\normalfont\normalcolor\scshape\large}
+
+%% Font for dedication
+\setkomafont{dedication}{\normalfont\normalcolor\itshape\Large}
+
+% Page styles
+% \pagestyle{headings} % Regular KOMA-Script headings style
+\pagestyle{scrheadings} % scrlayer-scrpage headings style (remaps headings and plain to scrheadings and plain.scrheadings)
+\renewcommand*{\titlepagestyle}{empty}
+\renewcommand*{\partpagestyle}{empty}
+\renewcommand*{\chapterpagestyle}{plain}
+\renewcommand*{\indexpagestyle}{plain}
+
+% Headings
+%% Use large fonts and wide spacing above and below headings
+%% Optional argument of sectioning commands specify shorthand for running head
+%% (can still be given key=value list to specify shorthand for several type of entries)
+%% Use separate lines for chapter number and title
+\KOMAoption{headings}{big,optiontohead}
+
+%% Format dicta (epigraphs)
+%%% General dictum settings
+\renewcommand*{\dictumwidth}{0.475\textwidth}
+\renewcommand*{\raggeddictumtext}{\RaggedRight} % With hyphenation
+\renewcommand*{\raggeddictumauthor}{\raggedleft} % Without hyphenation
+
+\renewcommand*{\dictumauthorformat}[1]{#1} % No parenthesis
+
+%%% Chapter dictum
+\newcommand*{\chapterdictumsize}{4\baselineskip} % Reserved space
+\NewDocumentCommand{\chapterdictum}{o +m}{
+  \parbox[b][\chapterdictumsize][t]{\linewidth}{%
+    \IfNoValueTF{#1}{%
+      \dictum{#2}%
+    }{%
+      \dictum[#1]{#2}%
+    }%
+  }%
+}
+
+%% Format part numbers and title
+\setkomafont{part}{\normalfont\normalcolor\scshape\Huge} % If no font-specific format
+\setkomafont{partnumber}{\usekomafont{part}\huge}
+
+%% Format chapter number and title
+%%% Format chapter numbers (scaling, color, and number style)
+\renewcommand*{\chapterformat}{\fontsize{72}{72}\selectfont\textcolor{gray}{\thechapter}}
+
+%%% Text-width wide horizontal rule for use under title
+\newcommand{\titlerule}[1][0.6pt]{\textcolor{gray}{\rule{\textwidth}{#1}}}
+
+%%% Number and title on a single line (chapterprefix=false)
+\makeatletter
+\renewcommand\chapterlinesformat[3]{%
+  \Ifstr{#1}{chapter}{% Only format differently for chapter level (as you can reuse chapter style for other levels)
+    % Align chapter title default, number lowered in margin
+    \raggedchapter#3\marginline{\usekomafont{chapter}\raisebox{-\height-1.25\baselineskip}{#2}}%
+    \par\nobreak\vspace{0.2\baselineskip-\parskip}\titlerule% Draw title rule
+  }{%
+    \@hangfrom{#2}{#3}% Default definition
+  }
+}
+\makeatother
+
+%%% Number and title on different lines (chapterprefix=true)
+\renewcommand{\chapterlineswithprefixformat}[3]{%
+  \Ifstr{#1}{chapter}{% Only format differently for chapter level (as you can reuse chapter style for other levels)
+    \raggedleft#2%
+    \raggedchapter#3% Align title the default way and align number right
+    \par\nobreak\vspace{0.2\baselineskip-\parskip}\titlerule%
+  }{%
+    #2#3% Default definition
+  }
+}
+
+\setkomafont{chapter}{\normalfont\normalcolor\scshape\huge} % If no font-specific format
+
+%%% Adjust (spacing) parameters related to chapter heading
+\RedeclareSectionCommand[%
+beforeskip=\dimexpr-\chapterdictumsize-\parskip\relax,
+afterskip=1.20\baselineskip plus .08\baselineskip minus .13\baselineskip,
+]{chapter}
+
+%% Format other (non-chapter) headings
+%%% Fonts (no font-specific format)
+% \setkomafont{section}{\usekomafont{disposition}\large}
+% \setkomafont{subsection}{\normalfont\normalcolor\scshape\normalsize}
+% \setkomafont{subsubsection}{\normalfont\normalcolor\scshape\normalsize}
+% \setkomafont{paragraph}{\normalfont\normalcolor\scshape\normalsize}
+% \setkomafont{subparagraph}{\normalfont\normalcolor\scshape\normalsize}
+
+%%% Format run-in/in-line headers
+\renewcommand*{\sectioncatchphraseformat}[4]{%
+  \hskip #2#3#4% Default definition
+  .% Following period
+}
+
+%% Format running heads
+\renewcommand*{\chaptermarkformat}{\thechapter.\enskip}
+\renewcommand*{\sectionmarkformat}{\thesection.\enskip}
+\setkomafont{pageheadfoot}{\normalfont\normalcolor\normalsize}
+
+
+% Table of contents
+%% Put bibliography, list of figures/tables, and index in TOC, unnumbered
+\KOMAoption{toc}{bibliography,listof,index}
+\setcounter{tocdepth}{\subsectiontocdepth}
+
+%% Format TOC entries (no font-specific format)
+\DeclareTOCStyleEntry[%
+entryformat=\normalfont\normalcolor\scshape\normalsize,%
+pagenumberbox=\hbox,%
+]{default}{chapter}
+
+\DeclareTOCStyleEntries[%
+entryformat=\normalfont\normalcolor\normalsize,%
+]{default}{section,subsection}
+
+% List of figures/tables
+%% Do not indent entries
+\KOMAoption{listof}{flat}
+
+% List of algorithms/listings
+%% Set up content list and environments for algorithms
+\DeclareNewTOC[%
+counterwithin=chapter, % Make algorithm counter depend on chapter counter
+float,% Define new content list and floating environment
+floatpos=tbhp,% Default floating position specifiers
+floattype=4,% Move independently figures (1) and tables (2)
+listname={List of Algorithms},% Title of content list
+name=Algorithm,% Prefix for caption labels and content list entries
+nonfloat,% Additionally define non-float environment
+owner=float,%
+setup={totoc},% Put content list as entry in TOC
+type=algorithm,% Environment name
+types=algorithms,% Plural of environment name
+atbegin={% Place regular captions above, side-captions top-left
+  \KOMAoption{captions}{heading,leftbeside,topbeside}%
+},
+]{loalg}
+
+\DeclareNewTOC[%
+counterwithin=chapter, % Make listing counter depend on chapter counter
+float,% Define new content list and floating environment
+floatpos=tbhp,% Default floating position specifiers
+floattype=8,% Move independently figures (1), tables (2), and algorithms (4)
+listname={List of Listings},% Title of content list
+name=Listing,% Prefix for caption labels and content list entries
+nonfloat,% Additionally define non-float environment
+owner=float,%
+setup={totoc},% Put content list as entry in TOC
+type=listing,% Environment name
+types=listings,% Plural of environment name
+atbegin={% Place regular captions above, side-captions top-left
+  \KOMAoption{captions}{heading,leftbeside,topbeside}%
+},
+]{lolst}
+
+% Floats
+%% Allow floats placed on top to occupy up to 80% of page
+%% and require floats to cover at least 75% of page before being
+%% considered for dedicated "float" page
+%% (These go together, so better change together appropriately,
+%% see: https://tex.stackexchange.com/a/169711/414595)
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+%% Set minimum page fraction for text to
+%% 15%, to better accommodate large floats.
+\renewcommand{\textfraction}{0.15}
+
+%% By default, place regular captions below, side-captions bottom-right
+\KOMAoption{captions}{signature,bottombeside,rightbeside}
+
+%% Patch table to have side-captions top-left
+\xpretocmd{\table}{\KOMAoption{captions}{heading,topbeside,leftbeside}}{}{\PatchFailed}
+
+%% Set caption label and description text in slightly smaller size
+%% Also, let multi-line captions "hang" with (small) indent of from second line,
+%% setting caption label in bold to distinguish it from description
+\setkomafont{captionlabel}{\normalfont\normalcolor\small\bfseries}
+\setkomafont{caption}{\normalfont\normalcolor\small}
+\setcapindent{1em}
+
+
+% Margins
+%% Margin notes
+%%% Set font size to footnotesize and align toward edge of text
+\newcommand*{\marginparnotefont}{%
+  \normalfont\normalcolor\footnotesize%
+  \Ifthispageodd{\RaggedRight}{\RaggedLeft}%
+}
+
+\RedeclareNoteColumn[%
+font=\marginparnotefont,
+]{marginpar}
+
+%%% Margin note without footnote marker or label
+\NewDocumentCommand{\marnote}{s O{marginpar} m}{%
+  \IfBooleanTF{#1}{% Regular (expanded)
+    \makenote[#2]{%
+      #3%
+    }%
+  }{% Starred (detokenized)
+    \makenote*[#2]{%
+      #3%
+    }%
+  }%
+}
+
+%%% Margin note with footnote marker and (optional) label, updates footnote counter
+\NewDocumentCommand{\marfootnote}{O{marginpar} m o}{%
+  \IfValueTF{#3}{%
+    \refstepcounter{footnote}%
+    \label{#3}%
+  }{%
+    \stepcounter{footnote}%
+  }%
+  \textsuperscript{\thefootnote}%
+  \makenote[#1]{%
+    \textsuperscript{\thefootnote}~#2%
+  }%
+}%
+
+
+% Footnotes
+%% Separate multiple, consecutive footnotes by a separator (a comma without
+%% surrounding spaces by default, determined by \multfootsep)
+%% Incompatible with hyperref, so instead use \multiplefootnoteseparator
+%% to manually insert a comma between footnotes
+% \KOMAoption{footnotes}{multiple}
+
+
+% Packages %
+% General package setup
+\input{preamble/packagesetup}
+
+% Additional package-specific setup
+\input{preamble/listingssetup} % Listings
+\input{preamble/tikzsetup} % TikZ
+
+
+% Macros %
+% General macro setup
+\input{preamble/macrosetup}
+
+
+% Global (KOMA) formatting (after package setup) %
+%% Leading
+%%% Increase default leading in text
+\newcommand*{\defaultlinespread}{1.05}
+\linespread{\defaultlinespread}
+
+%%% Increase default leading in tables
+\newcommand*{\defaultarraystretch}{1.25}
+\renewcommand*{\arraystretch}{\defaultarraystretch}
+
+% Headings
+%% Fonts (font-specific format)
+\setkomafont{disposition}{\normalfont\normalcolor\LCtoSMCP+} % Libertinus specific (\LCtoSMCP+)
+\setkomafont{section}{\usekomafont{disposition}\large}
+\setkomafont{subsection}{\usekomafont{disposition}\normalsize}
+\setkomafont{subsubsection}{\usekomafont{disposition}\normalsize}
+\setkomafont{paragraph}{\usekomafont{disposition}\normalsize}
+\setkomafont{subparagraph}{\usekomafont{disposition}\normalsize}
+
+
+% Bibliography %
+%% Open (more modern) formatting style
+%% (Does nothing if another bibliography package, e.g., biblatex, is used)
+\KOMAoption{bibliography}{openstyle}
+
+%% Add bibliography resources
+\addbibresource{bibliography.bib}
+% \addbibresource{cryptobib/abbrev1.bib}
+% \addbibresource{cryptobib/crypto.bib}
+
+
+% Metadata %
+\hypersetup{
+  pdftitle={<Title: Subtitle>},
+  pdfauthor={<Name>},
+  pdfsubject={<Main Subject, (Second) Main Subject, ...>},
+  pdfkeywords={<keyword1, keyword2, keyword3, ...>},
+  pdflang={<language>},
+}
+
+
+% Finalize %
+%% Recalculate type area to account for relevant changes in, e.g. font
+\recalctypearea

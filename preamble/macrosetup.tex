@@ -1,0 +1,194 @@
+%%% General macro and environment setup %%%
+
+% General typesetting %
+% Simultaneous sub- and superscript in text
+% Taken from https://tex.stackexchange.com/a/24082/414595
+\makeatletter
+\DeclareRobustCommand*\textsubsuperscript[2]{%
+  \@textsubsuperscript{\selectfont#1}{\selectfont#2}}
+\def\@textsubsuperscript#1#2{%
+  {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}
+                    ^{\mbox{\fontsize\sf@size\z@#2}}}}}
+\makeatother
+
+
+% Boxes %
+% Boxes with dashed outlines
+%% Default distance between content and outline in tight boxes
+\newlength{\tboxsep}
+\setlength{\tboxsep}{0.5pt}
+
+%% Context-aware (math) box with regular/solid outlines
+\newcommand{\boxedmp}[1]{\mathpalette{\boxedmpaux}{#1}}
+\newcommand{\boxedmpaux}[2]{\boxed{#1#2}}
+
+%% Tight solid box (text mode)
+\NewDocumentCommand{\tbox}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \fbox{#2}%
+}
+
+%% Tight solid box (math mode)
+\NewDocumentCommand{\tboxed}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \boxedmp{#2}%
+}
+
+%% Context-aware (math) box with dashed outlines
+\newcommand{\dboxmp}[1]{\mathpalette{\dboxmpaux}{#1}}
+\newcommand{\dboxmpaux}[2]{\dbox{\ensuremath{#1#2}}}
+
+%% Tight dashed box (text mode)
+\NewDocumentCommand{\tdbox}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \dbox{#2}%
+}
+
+%% Tight dashed box (math mode)
+\NewDocumentCommand{\tdboxed}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \dboxmp{#2}%
+}
+
+%% Tight dotted box (text mode)
+\NewDocumentCommand{\tdtbox}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \setlength{\dashlength}{2pt}%
+  \setlength{\dashdash}{0.5pt}%
+  \dbox{#2}%
+}
+
+%% Tight dotted box (math mode)
+\NewDocumentCommand{\tdtboxed}{o m}{
+  \IfNoValueTF{#1}{%
+    \setlength{\fboxsep}{\tboxsep}%
+  }{%
+    \setlength{\fboxsep}{#1}%
+  }%
+  \setlength{\dashlength}{2pt}%
+  \setlength{\dashdash}{0.5pt}%
+  \dboxmp{#2}%
+}
+
+
+% Mathematics %
+% Theorem, definitions, and remarks
+%% Theorem-like
+\declaretheoremstyle[%
+headfont=\normalfont\normalsize\normalcolor\bfseries,%
+notefont=\normalfont\normalsize\normalcolor\mdseries,%
+bodyfont=\normalfont\normalsize\normalcolor\slshape,%
+postheadspace=0.5em,%
+]{thm}
+
+\declaretheorem[%
+style=thm,%
+name=Theorem,%
+% refname={theorem,theorems},%
+% Refname={Theorem,Theorems},%
+]{theorem}
+
+\declaretheorem[%
+style=thm,%
+name=Lemma,%
+% refname={lemma,lemmas},%
+% Refname={Lemma,Lemmas},%
+numberlike=theorem,%
+]{lemma}
+
+\declaretheorem[%
+style=thm,%
+name=Axiom,%
+% refname={axiom,axioms},%
+% Refname={Axiom,Axioms},%
+numberlike=theorem,%
+]{axiom}
+
+\declaretheorem[%
+style=thm,%
+name=Corollary,%
+% refname={corollary,corollarys},%
+% Refname={Corollary,Corollarys},%
+numberlike=theorem,%
+]{corollary}
+
+\declaretheorem[%
+style=thm,%
+name=Proposition,%
+% refname={proposition,propositions},%
+% Refname={Proposition,Propositions},%
+numberlike=theorem,%
+]{proposition}
+
+%% Definition-like
+\declaretheoremstyle[%
+headfont=\normalfont\normalsize\normalcolor\bfseries,%
+notefont=\normalfont\normalsize\normalcolor\mdseries,%
+bodyfont=\normalfont\normalsize\normalcolor,%
+postheadspace=0.5em,%
+]{def}
+
+\declaretheorem[%
+style=def,%
+name=Definition,%
+% refname={definition,definitions},%
+% Refname={Definition,Definitions},%
+]{definition}
+
+%% Remark-like
+\declaretheoremstyle[%
+headfont=\normalfont\normalsize\normalcolor\itshape,%
+notefont=\normalfont\normalsize\normalcolor,%
+bodyfont=\normalfont\normalsize\normalcolor,%
+postheadspace=0.5em,%
+]{rmrk}
+
+\declaretheorem[%
+style=rmrk,%
+name=Remark,%
+% refname={remark,remarks},%
+% Refname={Remark,Remarks},%
+]{remark}
+
+\declaretheorem[%
+style=rmrk,%
+name=Claim,%
+% refname={claim,claims},%
+% Refname={Claim,Claims},%
+]{claim}
+
+
+% Code %
+% Sampling
+% Based on implementation from cryptocode package
+% (see https://ctan.org/pkg/cryptocode and https://tex.stackexchange.com/a/418791/414595)
+\makeatletter
+\newcommand{\smalldollar}{\mathrel{\mathpalette\small@dollar\relax}}
+\newcommand{\small@dollar}[2]{%
+  \vcenter{\hbox{%
+    $#1\textnormal{\fontsize{0.7\dimexpr\f@size pt}{0}\selectfont\$}$%
+  }}%
+}
+\makeatother
+
+\newcommand*{\sample}{\leftarrow\mathrel{\mkern-1.5mu}\smalldollar}

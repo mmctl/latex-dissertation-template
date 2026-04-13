@@ -1,0 +1,84 @@
+% Preamble %
+\input{preamble/preamble}
+
+
+% Switches %
+% Draft status
+\newif\ifdraft
+\drafttrue
+
+
+\ifdraft % When drafting...
+  % Visualize overfull boxes
+  % \KOMAoptions{overfullrule=true}
+
+  % Don't cache todo notes (which use TikZ under the hood)
+  % \makeatletter
+  % \renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[#1]{#2}\tikzexternalenable}
+  % \makeatother
+
+  \NewDocumentCommand{\todoA}{m}{\todo[color=T-Q-V5]{#1}} % Todo with priority A (high)
+  \NewDocumentCommand{\todoB}{m}{\todo[color=T-Q-V4]{#1}} % Todo with priority B (mid)
+  \NewDocumentCommand{\todoC}{m}{\todo[color=T-Q-V3]{#1}} % Todo with priority C (low)
+
+  % Specify files to include for compilation
+  % \includeonly{frontmatter/frontmatter}
+
+  % Specify "comment" environments to silence during drafting
+  % !! Needs the \begin{...} and \end{...} on separate lines, alone (no other chars, incl whitespace) !!
+  % (See https://tex.stackexchange.com/a/395964/414595)
+  % \excludecomment{tagheavy}
+\else % Else (when not drafting),...
+  % Make todo commands degenerate
+  % (simply gobbling up their argument and do nothing)
+  \makeatletter
+  \let\todo\@gobble
+  \let\todoA\@gobble
+  \let\todoB\@gobble
+  \let\todoC\@gobble
+  \makeatother
+
+  % Specify "comment" environments to include (that were excluded during drafting)
+  % \includecomment{tagheavy}
+\fi
+
+
+% BEGIN DOCUMENT %
+\begin{document}
+
+\ifdraft % When drafting...
+  % List all todos
+  \listoftodos
+  \cleardoubleoddpage
+\fi
+
+% BEGIN FRONT MATTER %
+\frontmatter
+\include{frontmatter/frontmatter}
+% END FRONT MATTER %
+
+
+% BEGIN MAIN MATTER %
+\mainmatter
+\include{mainmatter/dummy}
+% \include{mainmatter/introduction}
+% \include{mainmatter/preliminaries}
+% ...
+% \include{mainmatter/discussion}
+% \include{mainmatter/conclusion}
+% END MAIN MATTER %
+
+
+% BEGIN BACK MATTER %
+\backmatter
+\include{backmatter/backmatter}
+% END BACK MATTER %
+
+\end{document}
+% END DOCUMENT %
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% TeX-engine: luatex
+%%% End:

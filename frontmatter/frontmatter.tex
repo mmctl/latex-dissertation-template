@@ -1,0 +1,66 @@
+% Page numbering style (reset by \mainmatter) %
+\pagenumbering{Roman}
+
+% Title page(s) %
+% Extra page(s), before official university-specific page(s)
+% (used for extra information such as ISBN, contact, printer, cover design, etc.)
+\title{}
+\subtitle{}
+\date{}
+
+\ifdraft % When drafting...
+  % Explicitly indicate it is a draft (and the current date)
+  \title{Dissertation Draft}
+  \date{\today}
+\fi
+
+\uppertitleback{%
+  Copyright {\copyright} <Name>\\
+  Email: \href{mailto:<Email>}{<Email>}\\
+  Website: \url{<Website>}
+
+  \vspace*{2\bigskipamount}
+
+  \noindent
+  The research presented in this dissertation was supported by <Grant/Support, if any; else remove this text>
+
+  \vspace*{2\bigskipamount}
+
+  \noindent
+  A catalog record is available from Eindhoven University of Technology Library\\
+  ISBN: <ISBN, if any>%
+}
+\lowertitleback{%
+  Printed by <Printing Company>, <Place>, <Country>\\
+  Cover design by <Cover Designer>%
+}
+\dedication{%
+  <Dedication; optional, can remove>%
+}
+
+\maketitle
+
+\cleardoubleoddemptypage
+
+% Official university-specific page(s)
+\input{frontmatter/tuetitlepage}
+
+
+% Acknowledgments %
+\input{frontmatter/acknowledgments}
+
+
+% Abstract %
+\input{frontmatter/abstract}
+
+
+% Table of contents %
+\tableofcontents
+
+
+% List of figures, tables, algorithms, and listings (in that order) %
+\listoffigures
+\listoftables
+\listofalgorithms
+\listoflistings
+% \lstlistoflistings

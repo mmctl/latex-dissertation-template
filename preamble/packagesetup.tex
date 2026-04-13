@@ -1,0 +1,406 @@
+%%% General package setup %%%
+
+% Languages %
+% Multilingual typesetting for LuaLaTeX (replacing Babel)
+% (see https://ctan.org/pkg/polyglossia)
+\usepackage{polyglossia}
+
+% Set default language to American English and register
+% Dutch and French as other languages
+\setdefaultlanguage[variant=usmax,ordinalmonthday=false]{english}
+\setotherlanguage{dutch}
+\setotherlanguage{french}
+
+% Context-sensitive quotations
+% (see https://ctan.org/pkg/csquotes)
+\usepackage[
+autostyle=true, % Automatically adapt style to current language
+]{csquotes}
+
+
+% Order-dependent, early %
+% Mathtools (includes amsmath, extending it)
+% (see https://ctan.org/pkg/mathtools)
+\usepackage[
+intlimits, % Integral limits below/above in display math (passed to amsmath)
+]{mathtools}
+
+% Inline math italics correction and always show manual tags
+\mathtoolsset{mathic=true,showmanualtags=true}
+
+% Protrude equation numbers into the margin
+% (See https://tony-zorman.com/posts/phd-typesetting.html#the-margin)
+\makeatletter
+\let\oldmaketag@@@\maketag@@@%
+\def\oldtagform@#1{\oldmaketag@@@{(\ignorespaces#1\unskip\@@italiccorr)}}
+\renewcommand{\eqref}[1]{\textup{\oldtagform@{\ref{#1}}}}
+\newlength{\width@@}
+\def\maketag@@@#1{%
+  \hbox{%
+    \hskip1sp\m@th\llap{%
+      \normalfont%
+      \normalcolor%
+      #1%
+      \settowidth{\width@@}{#1}%
+      \Ifthispageodd{\hspace{-\the\width@@-\the\marginparsep}}{\hspace{\textwidth+\the\marginparsep}}%
+    }%
+  }%
+}%
+
+% Remove minimum separation length between tag and equation within text/display
+% area, as the tag fully protrudes into the margin anyways
+% This aims to prevent the tag from being shifted downward when the displayed
+% equation overlaps what would be the *original* position of the tag
+% (without the above margin protrusion)
+\renewcommand{\mintagsep}{0pt}
+\makeatother
+
+
+% Fonts and (Micro-)Typography %
+% Fontspec for font selection in LuaLaTeX
+% (see https://ctan.org/pkg/fontspec)
+\usepackage{fontspec}
+
+% Libertinus (OTF) fonts, similar to Linux Libertine (Mono) and Biolinum,
+% but with added math font.
+% (see https://ctan.org/pkg/libertinus-otf)
+\usepackage[
+osf,p, % Old-style, proportional numerals (in text)
+sb, % Semi-bold version
+]{libertinus-otf}
+% Useful Libertinus features:
+% - \Lctosc, \LCtoSC+, \LCtoSC+, for typesetting small caps
+% - \Lcase, \LCASE+, \LCASE- for typesetting case-sensitive forms
+% - \Lfrac, \LFRAC+, \LFRAC- for typesetting inline fractions
+% - \Lsalt, \LSALT+, \LSALT- for stylistic alternatives
+
+% Customizable math alphabets for \mathcal, \mathfrak, \mathbb, and \mathscr
+% (see https://ctan.org/pkg/mathalpha)
+%% Relax some definitions already defined through loading
+%% of libertinus-otf and re-defined by mathalpha
+\let\mathbfcal\relax
+\let\mathbfscr\relax
+\let\mathbffrak\relax
+\usepackage[
+cal=stixtwoplain, % Calligraphic (\mathcal, \mathbfcal)
+scr=stixtwofancy, % Script (\mathscr, \mathbfscr)
+frak=stixtwo, % Fraktur (\mathfrak, \mathbffrak)
+]{mathalpha}
+
+% Micro-typographical enhancements
+% (see https://ctan.org/pkg/microtype)
+\usepackage[
+tracking=smallcaps, % Tracking for small caps
+verbose=errors, % All warnings become errors
+]{microtype}
+
+% Additional unicode symbols
+\usepackage{pifont}
+
+% Colors %
+% Color facilities and extensions
+% (see https://ctan.org/pkg/xcolor)
+\usepackage[
+luatex, % Use luatex driver
+x11names, % Load predefined color set based on X11's colors
+table, % Load tools for coloring table rows, columns, and cells
+hyperref, % Integrate with hyperref
+]{xcolor}
+
+% Colorblind-friendly color schemes
+% (see https://ctan.org/pkg/colorblind)
+\usepackage[
+Tol, % Load schemes by Paul Tol
+pgf, % Enable colormaps for use with pgfplots (or TikZ)
+]{colorblind}
+
+
+% Boxes %
+% Variable width minipages
+% (see https://ctan.org/pkg/varwidth)
+\usepackage{varwidth}
+
+% Boxes with dashed lines
+% (see https://ctan.org/pkg/dashbox)
+\usepackage{dashbox}
+
+% Stacking
+% Customized stacking of objects
+% (see https://ctan.org/pkg/stackengine)
+\usepackage[
+usestackEOL,% Use // for EOL symbol
+]{stackengine}
+
+
+% Figures %
+% Handling of graphics, including both images and text
+% (see https://ctan.org/pkg/graphicx)
+\usepackage{graphicx}
+
+% Specify directories to search for graphics files
+\graphicspath{{figures/}}
+
+% Programmatic creation of figures with TikZ
+% (see https://tikz.dev/)
+\usepackage{tikz}
+
+% TikZ-based creation of trees
+% (see https://www.ctan.org/pkg/forest)
+\usepackage[%
+edges,% Additional edge formatting specs
+% external,% Use TikZ's externalization (see below), enhanced detection
+]{forest}
+
+% Cache ("externalize") TikZ figures in figures/tikz/
+% to speed up compilation
+% !! This requires the --shell-escape option to the engine !!
+% (see https://tikz.dev/library-external)
+\usetikzlibrary{external}
+% \tikzexternalize[prefix=figures/tikz/]
+
+
+% Tables %
+% Enhanced functionality for array/tabular
+% (see https://ctan.org/pkg/array)
+\usepackage{array}
+
+% Dynamic-width table columns
+% (see https://ctan.org/pkg/tabularx)
+\usepackage{tabularx}
+
+% Multi-row cells, also adds functionality to makecell package (see below)
+% (see https://ctan.org/pkg/multirow)
+\usepackage{multirow}
+
+% Column head layouts and multi-line cells
+% (see https://ctan.org/pkg/makecell)
+\usepackage{makecell}
+
+% Support for page-crossing tables
+% (see https://ctan.org/pkg/longtable)
+\usepackage{longtable}
+
+% Functionality for typesetting formal, typographically sound tables
+% (see https://ctan.org/pkg/booktabs)
+\usepackage{booktabs}
+
+% Table environment separating style and content,
+% providing amalgamation of features from other table
+% packages, including the above
+% (see https://ctan.org/pkg/tabularray)
+\usepackage{tabularray}
+
+
+% Mathematics %
+% Tools for customizing theorem environments
+% (see https://ctan.org/pkg/amsthm and https://ctan.org/pkg/thmtools)
+\usepackage{amsthm}
+\usepackage{thmtools}
+
+
+% Algorithms and Code %
+% Floating algorithm environment
+% \usepackage{algorithm}
+
+% Pseudocode typesetting (loads algorithmicx)
+% (see https://ctan.org/pkg/algpseudocodex and https://ctan.org/pkg/algorithmicx)
+\usepackage[
+commentColor=T-Q-B0, % Comment color
+rightComments=false, % Don't right justify comments
+beginComment=\triangleright~, % Regular comment opening delimiter
+beginLComment=\triangleright~, % Long comment opening delimiter
+endLComment={}, % Long comment closing delimiter
+]{algpseudocodex}
+
+% Change typesetting of line numbers
+\algrenewcommand{\alglinenumber}[1]{\textcolor{T-Q-B0}{\small{#1}:}}
+
+% Define command that for comment with variable horizontal spacing
+\algnewcommand{\Commentvs}[2][1em]{\hspace{#1}\Comment{#2}}
+
+% Change some algorithmic keywords to shorter forms
+\algrenewcommand{\algorithmicdo}{:}
+\algrenewcommand{\algorithmicforall}{\textbf{forall}}
+\algrenewcommand{\algorithmicprocedure}{\textbf{proc}}
+\algrenewcommand{\algorithmicfunction}{\textbf{func}}
+
+% Change algorithmic boxes to have dashed outline
+\tikzset{algpxDefaultBox/.style={draw=dashed}}
+
+% Patch algorithmic environment to prevent TikZ externalization
+% \xpretocmd{\algorithmic}{\tikzexternaldisable}{}{\PatchFailed}%
+% \xapptocmd{\endalgorithmic}{\tikzexternalenable}{}{\PatchFailed}%
+
+% Algorithmic with tight top and bottom frame rule
+\newsavebox{\algobox}
+\newlength{\algorightmargin}
+\NewDocumentEnvironment{algorithmicframed}{O{0} O{t} +b}%
+{%
+  \ifthenelse{\equal{#1}{0}}%
+  {\setlength{\algorightmargin}{1em}}%
+  {\setlength{\algorightmargin}{1.7em}}%
+  % Save the body into a measuring box
+  \begin{lrbox}{\algobox}
+    \begin{varwidth}{\linewidth}
+      \begin{algorithmic}[#1]
+        #3
+      \end{algorithmic}
+    \end{varwidth}
+  \end{lrbox}%
+  % Typeset content with exact rule width
+  \begin{minipage}[#2]{\wd\algobox + \algorightmargin}
+    \rule[\ht\strutbox]{\linewidth}{0.4pt}\vspace{-\baselineskip}
+    \begin{algorithmic}[#1]
+    #3
+    \end{algorithmic}
+    \rule[\ht\strutbox]{\linewidth}{0.4pt}
+  \end{minipage}%
+}
+{}
+
+
+% Source code typesetting
+% (see https://ctan.org/pkg/listings)
+\usepackage{listings}
+
+% Change title of listings list to match that for figures/tables
+\renewcommand*{\lstlistlistingname}{List of Listings}
+
+% Default listings setup
+\lstset{%
+  % Frame
+  captionpos=t, % Position caption at top (mirroring what's typical for algorithms)
+  frame=tb, % Top and bottom rules
+  framesep=\smallskipamount, % Small skip between frame and listing content
+  % Float placement
+  floatplacement=tbhp, % Match float placement of built-in listing environment (as fallback)
+  % Character printing and placement
+  upquote=true, % Print backtick and single quote as is
+  columns=[c]fixed, % Monospace characters, centered in their box
+  keepspaces=true, % Don't drop spaces for column alignment
+  tabsize=2, % Tabstops every 2 spaces
+  mathescape=false, % Don't allow escaping to LaTeX with $
+  showstringspaces=false, % Don't print characters for spaces
+  % Line numbers
+  numbers=none, % No line numbers
+  % Basic style
+  basicstyle={\normalsize\ttfamily},
+}
+
+
+% Citations %
+\usepackage[
+backend=biber, % Use biber as backend
+bibencoding=utf-8, % Use UTF-8 encoding
+bibstyle=alphabetic,citestyle=alphabetic, % Bibliography and citation styles
+minnames=3,maxnames=4, % Allow up to 4 names in printed name lists, shorten to 3 if there are more
+maxbibnames=1000, % Allow any number of names in bibliography entries
+minitems=3,maxitems=4, % Allow up to 4 items in printed item lists, shorten to 3 if there are more
+block=space, % Add some additional horizontal space between large parts of entry
+hyperref=true, % Use hyperref for internal citation links
+backref=true,backrefstyle=three+, % Add back-references in bibliography to pages with citations
+labelalpha=true, % Request labelalpha and extraalpha data fields for customization
+minalphanames=3,maxalphanames=4 % Allow up to 4 names in printed alpha citation labels, shorten to 3 if there are more
+]{biblatex}
+
+% Alphabetic-style citations should use lining (non-old) style numerals
+\DeclareFieldFormat{labelalpha}{\liningnums{#1}}
+
+% Force Oxford comma in lists in bibliography entries
+\DeclareDelimFormat{finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{,}{}%
+  \addspace\bibstring{and}\space}
+
+% Make \fullcite macro write out all names (e.g., no "et al.")
+\xpretocmd{\fullcite}{\AtNextCite{\defcounter{maxnames}{99}}}{}{\PatchFailed}
+
+
+% Drafting %
+% Comments (allows silencing of environments)
+% (see https://ctan.org/pkg/comment)
+\usepackage{comment}
+
+% Dummy text
+% (see https://ctan.org/pkg/lipsum)
+\usepackage{lipsum}
+
+% Todo notes
+% (see https://ctan.org/pkg/todonotes)
+\usepackage[
+colorinlistoftodos=true,
+color=T-Q-V4,
+tickmarkheight=1ex,
+textsize=small,
+]{todonotes}
+
+% Visualization of page layout
+% (see https://ctan.org/pkg/layouts)
+\usepackage{layouts}
+
+
+% Order-dependent, late %
+% Hyperlinking/referencing and friends
+\usepackage[
+pdfa=true, % Attempt compatibility with PDF/A
+linktoc=page, % In TOC, have page number contain link (not text)
+colorlinks=true, % Enable coloring of links (implicitly disabling boxes)
+linkcolor={T-Q-MC6}, % Set link color to Tol's Medium Contrast Dark Red
+citecolor={T-Q-MC6}, % Set cite color to Tol's Medium Contrast Dark Red
+urlcolor={T-Q-MC6}, % Set url color to Tol's Medium Contrast Dark Red
+]{hyperref}
+
+% Cryptography-specific pseudocode typesetting
+% (see https://ctan.org/pkg/cryptocode)
+% No options are provided here, as they only seem to introduce
+% macros for typesetting short cryptographic names or operators.
+% We specify the ones we need ourselves in macrosetup.tex
+\usepackage{cryptocode}
+
+% Change default style (trying to synchronize with that of algorithmicx/algpseudocodex)
+\pcsetargs{bodylinesep=0pt,codesize=\normalsize,subcodesize=\normalsize,jot=-\jot} % Distance between header line and bode, code size, and vertical spacing between lines
+
+% Line numbers
+\renewcommand*{\pclnstyle}[1]{\textcolor{T-Q-B0}{\textnormal{\small{#1}}}}
+\renewcommand*{\pclnseparator}{\pclnstyle{:}}
+\renewcommand*{\pclnspace}{0.5em}
+
+% Comments
+\renewcommand*{\pccomment}[2][1em]{\hspace{#1}\textcolor{T-Q-B0}{\triangleright~\textnormal{\textit{#2}}}}
+\renewcommand*{\pclinecomment}[2][0em]{\pccomment[#1]{#2}}
+
+% Keywords/constants/punctuation
+\newcommand*{\pccolon}{%
+  \ifmmode%
+    \mathpunct{:}
+  \else%
+    :%
+  \fi%
+}
+\renewcommand*{\pcelse}{\textnormal{\textbf{else}}}
+\newcommand*{\pctern}[3]{%
+  #1
+  \mathbin{\textnormal{\textbf{if}}}
+  #2
+  \mathbin{\textnormal{\textbf{else}}}
+  #3
+}
+
+% Clever referencing, e.g., automatic sorting, compression, context-awareness
+% (see https://ctan.org/pkg/cleveref)
+\usepackage[
+capitalize, % Capitalize referenced names (e.g., Theorem instead of theorem)
+noabbrev, % Don't use abbreviations of referenced names
+]{cleveref}
+
+% Force Oxford comma in reference lists
+\newcommand*{\creflastconjunction}{, and\nobreakspace}
+\newcommand*{\creflastgroupconjunction}{, and\nobreakspace}
+
+% Fix cleveref use with cryptocode
+\pcfixcleveref
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main.tex"
+%%% TeX-engine: luatex
+%%% End:

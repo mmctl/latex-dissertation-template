@@ -1,0 +1,53 @@
+name: Dissertation Build on Push, Release on Tag/Dispatch
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      draft_release:
+        description: 'Should the release be a draft?'
+        required: false
+        default: true
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dissertation repository (and submodules)
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+          
+      - name: Build dissertation PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          os: debian
+          texlive_version: 2026
+          root_file: main.tex
+          args: ''
+
+      - name: Upload dissertation PDF
+        uses: actions/upload-artifact@v6
+        with:
+          name: dissertation-pdf
+          path: main.pdf
+          if-no-files-found: error
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build
+    if: github.event_name == 'workflow_dispatch' || github.ref_type == 'tag'
+    steps:
+      - name: Download dissertation PDF (from build job)
+        uses: actions/download-artifact@v8
+        with:
+          name: dissertation-pdf
+
+      - name: Create release of dissertation PDF
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.draft_release == 'true' }}
+          files: main.pdf
+          fail_on_unmatched_files: true

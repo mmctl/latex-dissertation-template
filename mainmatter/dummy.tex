@@ -1,0 +1,297 @@
+\setchapterpreamble[o]{%
+  \chapterdictum[Dummy Person]{%
+    Dummy quote from Dummy Person.%
+  }%
+}
+\chapter{Dummy Chapter}\label{main:dummy}
+
+This chapter briefly showcases the main structural elements, environments, and
+helper commands provided by the template. Much of this functionality comes from
+existing packages, either through direct use or through the particular
+configuration adopted here. The same is true for more general aspects such as
+layout, headings, and floats, where the template relies primarily on
+KOMA-Script, in particular its \texttt{scrbook} class. For further details, see
+the files in the \texttt{preamble} directory, which are heavily commented and
+contain links to the relevant packages and their documentation.
+
+\section{Textual features}\label{main:dummy:text}
+
+This section demonstrates ordinary prose features. For example, this sentence
+contains a regular footnote\footnote{This is a footnote.} and a margin
+note.\marnote{This is a margin note.} Margin notes take two compilation passes
+to properly typeset at the right location. This sentence contains two
+consecutive footnotes, separated by a comma, inserted using
+\verb|\multiplefootnoteseparator|.%
+\footnote{The first of two consecutive footnotes.}\multiplefootnoteseparator%
+\footnote{The second of two consecutive footnotes.}
+
+When drafting (that is, when \verb|\ifdraft| evaluates to true), todo notes with
+different urgency levels are available as well:
+\begin{itemize}
+\item Very\todoA{High-priority todo note.} urgent.
+
+\item Less urgent.\todoB{Medium-priority todo note.}
+
+\item Optional,\todoC{Low-priority todo note.} perhaps.
+\end{itemize}
+
+All todo notes are automatically added to the list of todo notes at the
+beginning of the document.
+
+\subsection{Subsection heading}\label{main:dummy:text:sectioning} Subsection
+headings are the deepest heading level that is still numbered and included in
+the table of contents.
+
+\subsubsection{Subsubsection heading} Subsubsection headings are no longer
+numbered and are not included in the table of contents.
+
+\paragraph{Paragraph heading} Paragraph headings are run in and end with a
+period.
+
+\subparagraph{Subparagraph heading} Subparagraph headings are similar to
+paragraph headings, but are also indented.
+
+\section{Math}\label{main:dummy:math}
+
+This section showcases some of the template's built-in mathematical
+typesetting, including theorem-like environments, displayed equations, and a
+few convenience macros.
+
+\begin{definition}[Sampling]\label{main:dummy:def:sample}
+  For a set \(S\), the expression \(x \sample S\) denotes that \(x\) is sampled from
+  \(S\) according to some distribution.
+\end{definition}
+
+\begin{remark}[Sampling macro]\label{main:dummy:rmk:sample}
+  In \cref{main:dummy:def:sample}, the sampling operator is typeset using the
+  \verb|\sample| macro provided by the template.
+\end{remark}
+
+\begin{axiom}[Toy axiom]\label{main:dummy:ax:toy}
+  For every positive integer \(n\), there exists a string in \(\{0,1\}^n\).
+\end{axiom}
+
+\begin{lemma}[Toy lemma]\label{main:dummy:lem:toy}
+  Let \(n \ge 1\). If \(x \sample \{0,1\}^n\), then \(x \in \{0,1\}^n\).
+\end{lemma}
+\begin{proof}
+  Immediate from the definition of sampling from \(\{0,1\}^n\).
+\end{proof}
+
+\begin{proposition}[Toy proposition]\label{main:dummy:prop:toy}
+  Let \(x \sample \{0,1\}^n\). Then \(x\) has length \(n\).
+\end{proposition}
+
+\begin{theorem}[Toy theorem]\label{main:dummy:thm:toy}
+  Every positive integer admits a binary string of the same length.
+\end{theorem}
+\begin{proof}[Proof sketch]
+  Choose the string guaranteed by \cref{main:dummy:ax:toy}.
+\end{proof}
+
+\begin{corollary}\label{main:dummy:cor:toy}
+  For every positive integer \(n\), the set \(\{0,1\}^n\) is non-empty.
+\end{corollary}
+
+\begin{claim}\label{main:dummy:clm:counter}
+  \Cref{main:dummy:ax:toy,main:dummy:lem:toy,main:dummy:prop:toy,main:dummy:thm:toy,main:dummy:cor:toy}
+  share the same theorem counter.
+\end{claim}
+
+Below is an example of a displayed equation:
+\begin{equation}\label{main:dummy:eq:identity}
+  (a+b)^2 = a^2 + 2ab + b^2
+\end{equation}
+
+As \cref{main:dummy:eq:identity} illustrates, equation tags are placed in the
+margin, thereby keeping them visually separate from the mathematical content and
+freeing up space for the typesetting of the equation itself.
+
+\section{Figures and Tables}\label{main:dummy:figtab}
+
+The template aims to provide sensible default formatting for figures, tables,
+and the corresponding lists of figures and tables. Caption labels
+are typeset in bold to distinguish them from the caption text; single-line
+captions are centered, while multi-line captions are set hanging from the second
+line onward. By default, figure captions are configured for placement below the
+figure, while table captions are configured for placement above the table, in
+line with common typographic convention. The actual caption placement nevertheless
+remains under user control: placing \verb|\caption| before the content puts the
+caption above it, while placing it after the content puts it below.
+See \cref{main:dummy:fig:ex,main:dummy:tab:ex} for examples.
+
+\begin{figure}
+  \centering
+  \colorbox{T-Q-B0}{\rule[4em]{4em}{0pt}}
+  \caption{Example figure with single-line caption.}
+  \label{main:dummy:fig:ex}
+\end{figure}
+
+\begin{table}
+  \centering
+  \caption{Example table with an artificially long caption to ensure that it
+  spans multiple lines and thus demonstrates the hanging indentation used for
+  longer captions.}
+  \label{main:dummy:tab:ex}
+  \begin{tabular}{lcc}
+    \toprule
+    Foo & Bar & Baz  \\
+    \midrule
+    Foo cell & Bar cell & Baz cell \\
+    Foo cell & Bar cell & Baz cell \\
+    Foo cell & Bar cell & Baz cell \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Algorithms and Listings}\label{main:dummy:alglst}
+
+Beyond figures and tables, the template also provides floating environments for
+algorithms and listings, together with matching content lists. These are styled
+consistently with the other floating environments (and their lists). As
+for tables, the captions for algorithms and listings are formatted
+for placement above the content.
+
+For algorithms, the template uses a floating environment that does not add a
+frame around the algorithm contents by itself. Because of that, the contents
+need to provide their own framing. To make this easy, the template provides the
+\verb|algorithmicframed| environment. It works like \verb|algorithmic|, but
+automatically adds a top and bottom rule of the correct width. In addition, the
+template changes some of the default keywords and formatting used by the
+algorithm environments make the result a bit less cluttered/verbose. See
+\cref{main:dummy:alg:ex} for an example.
+
+\begin{algorithm}
+  \centering
+  \caption{Example algorithm.}
+  \label{main:dummy:alg:ex}
+  \begin{algorithmicframed}[1]
+    \Procedure{Random}{\(n\)}
+    \LComment{Line comment}
+    \For{\(i = 0, \ldots, 10\)}
+      \State \(x \sample \{0,1\}^n\) \Commentvs{Comment (default space)}
+    \EndFor
+    \State \Return \(x\) \Commentvs[3em]{Comment (custom space)}
+    \EndProcedure
+  \end{algorithmicframed}
+\end{algorithm}
+
+For users of \verb|cryptocode|, the template also adjusts and enables that
+package’s typesetting to better match the other pseudocode environments used
+here (\verb|algorithmic| and \verb|algorithmicframed|). This mainly
+affects the font size, line numbers, line spacing, and comment formatting. See
+the example in \cref{main:dummy:cc:ex}, and compare the typesetting of its code
+and line numbers with that of \cref{main:dummy:alg:ex}. The goal is not to make
+the two styles identical, but to make their main typographic elements
+sufficiently coherent that they work well together.
+
+\begin{figure}
+  \begin{pchstack}[center,boxed]
+    \procedure[linenumbering]{$\mathsf{Random}(n)$}{%
+      \pclinecomment{Line comment}\\
+      \pcfor i = 0, \ldots, 10\pccolon\\
+      \t x \sample \{0,1\}^n \pccomment{Comment (default space)}\\
+      \pcreturn x \pccomment[3em]{Comment (custom space)}
+    }
+  \end{pchstack}
+  \caption{Example (\texttt{cryptocode}) procedure.}
+  \label{main:dummy:cc:ex}
+\end{figure}
+
+Finally, the template provides a default setup for the \verb|listings| package.
+This is intended for source-code listings written using \verb|lstlisting|
+environments. Although \verb|listings| also provides its own support for
+floating, captions, labels, and content lists, you may prefer to use the
+template's \verb|listing| environment instead, so that these elements remain
+consistent with the other floating environments. See \cref{main:dummy:lst:ex}
+for an example.
+\begin{listing}
+  \caption{Example listing.}
+  \label{main:dummy:lst:ex}
+\begin{lstlisting}[language={[3]Python}]
+def random(n: int):
+    for i in range(0, 11):
+        x = os.urandom(n)
+    return x
+\end{lstlisting}
+\end{listing}
+
+\section{Colors}\label{main:dummy:colors}
+
+By default, the template loads the \verb|colorblind| package. Besides providing
+several colorblind-friendly color schemes, this package also remaps a number of
+the standard built-in color names to a colorblind-friendly default scheme. At
+the same time, several built-in color names for which no suitable default
+colorblind-friendly replacement is provided are intentionally remapped to black.
+\Cref{main:dummy:tab:colors} shows these remapped default color names as used by
+the template. If you want to use \verb|colorblind| without this default
+remapping behavior, pass it the \verb|keep-defaults| option.
+
+\begin{table}
+  \newcommand{\swatch}[1]{%
+    \fcolorbox{black}{#1}{\rule{0pt}{1.2ex}\rule{2.5em}{0pt}}%
+  }
+  \centering
+  \caption{Remapped built-in color names provided by \texttt{colorblind}.}
+  \label{main:dummy:tab:colors}
+  \begin{tabular}{llc}
+    \toprule
+    Name & Swatch & RGB \\
+    \midrule
+    \texttt{blue}      & \swatch{blue}      & (68, 119, 170) \\
+    \texttt{cyan}      & \swatch{cyan}      & (102, 204, 238) \\
+    \texttt{green}     & \swatch{green}     & (34, 136, 51) \\
+    \texttt{yellow}    & \swatch{yellow}    & (204, 187, 68) \\
+    \texttt{red}       & \swatch{red}       & (238, 102, 119) \\
+    \texttt{violet}    & \swatch{violet}    & (170, 51, 119) \\
+    \texttt{gray}      & \swatch{gray}      & (187, 187, 187) \\
+    \midrule
+    \texttt{orange}    & \swatch{orange}    & (0, 0, 0) \\
+    \texttt{brown}     & \swatch{brown}     & (0, 0, 0) \\
+    \texttt{darkgray}  & \swatch{darkgray}  & (0, 0, 0) \\
+    \texttt{lightgray} & \swatch{lightgray} & (0, 0, 0) \\
+    \texttt{lime}      & \swatch{lime}      & (0, 0, 0) \\
+    \texttt{magenta}   & \swatch{magenta}   & (0, 0, 0) \\
+    \texttt{olive}     & \swatch{olive}     & (0, 0, 0) \\
+    \texttt{pink}      & \swatch{pink}      & (0, 0, 0) \\
+    \texttt{purple}    & \swatch{purple}    & (0, 0, 0) \\
+    \texttt{teal}      & \swatch{teal}      & (0, 0, 0) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Helpers}\label{main:dummy:helpers}
+
+The template also provides a few small helpers for inline and mathematical
+typesetting. For example, to typeset a text subscript and superscript at the
+same time, it provides \verb|\textsubsuperscript|:
+H\textsubsuperscript{2}{+}O.
+
+For outlined text, the template provides \verb|\tbox| (solid), \verb|\tdbox|
+(dashed), and \verb|\tdtbox| (dotted):
+
+\begin{itemize}
+\item \tbox{Text, solid outline} \tbox[2pt]{Text, more spacious solid outline}
+\item \tdbox{Text, dashed outline} \tdbox[2pt]{Text, more spacious dashed outline}
+\item \tdtbox{Text, dotted outline} \tdtbox[2pt]{Text, more spacious dotted outline}
+\end{itemize}
+
+Similarly, for outlined mathematics, the template provides
+\verb|\tboxed| (solid), \verb|\tdboxed| (dashed), and \verb|\tdtboxed|
+(dotted). These commands are context-aware, meaning that they scale with the
+surrounding math style, for example in subscripts and superscripts:
+
+\begin{itemize}
+\item
+  \(\tboxed{x+y}\) \(\tboxed[2pt]{x+y}\)
+  \(A^{\tboxed{ij}}\) \(A^{\tboxed[2pt]{ij}}\)
+  \(B_{\tboxed{k}}\) \(B_{\tboxed[2pt]{k}}\)
+\item
+  \(\tdboxed{x+y}\) \(\tdboxed[2pt]{x+y}\)
+  \(A^{\tdboxed{ij}}\) \(A^{\tdboxed[2pt]{ij}}\)
+  \(B_{\tdboxed{k}}\) \(B_{\tdboxed[2pt]{k}}\)
+\item
+  \(\tdtboxed{x+y}\) \(\tdtboxed[2pt]{x+y}\)
+  \(A^{\tdtboxed{ij}}\) \(A^{\tdtboxed[2pt]{ij}}\)
+  $B_{\tdtboxed{k}}$ $B_{\tdtboxed[2pt]{k}}$
+\end{itemize}
