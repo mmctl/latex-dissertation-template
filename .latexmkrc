@@ -10,4 +10,4 @@ $max_repeat = 10;
 # $bibtex_use = 1;
 
 # Additional files to delete when issuing -C
-$clean_full_ext = "slnc lol loalg lolst auxlock aux* tdo for* backmatter/aux*";
+$clean_full_ext = "slnc lol loalg lolst aux* tdo for*";
