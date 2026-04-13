@@ -133,7 +133,8 @@ WIP
 ├── mainmatter
 │   └── ...
 ├── backmatter
-│   └── backmatter.tex
+│   ├── backmatter.tex
+│   └── cv.tex
 ├── figures
 │   ├── ...
 │   └── tikz
@@ -182,14 +183,18 @@ At a high level, the purpose of each included directory and file is as follows:
       Abstract chapter.
 - `mainmatter/`  
   This directory is for the dissertation chapters. Put your main chapter files
-  here, typically one file per chapter. A dummy chapter file (`dummy.tex`) is
-  provided, demonstrating some of the basic elements and features you can use
-  for typesetting your dissertation.
+  here, typically one file per chapter. In the current setup (by default),
+  although conceptually questionable, the appendices are also part of the
+  mainmatter to maintain chapter numbering. A dummy chapter file
+  (`dummy.tex`) is provided, demonstrating some of the basic elements and
+  features you can use for typesetting your dissertation.
 - `backmatter/`  
   This directory contains the material after the main chapters.
     - `backmatter.tex`  
       Main backmatter file. In the current setup, this handles the bibliography
       and appendix transition.
+    - `cv.tex`  
+      Curriculum vitae chapter.
 - `figures/`  
   This directory is for figures and graphics. Store image files and other
   graphical assets here.

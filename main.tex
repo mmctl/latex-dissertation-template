@@ -66,6 +66,18 @@
 % ...
 % \include{mainmatter/discussion}
 % \include{mainmatter/conclusion}
+
+% Conceptually, bibliography and appendices probably belong to the backmatter,
+% but we include them in the mainmatter (i.e., before the \backmatter macro) to
+% ensure that appendices titles are still numbered.
+% Bibliography
+\printbibliography
+
+% Appendices
+\appendix
+% \include{mainmatter/appendix0}
+% ...
+% \include{mainmatter/appendixN}
 % END MAIN MATTER %
 
 
@@ -76,9 +88,3 @@
 
 \end{document}
 % END DOCUMENT %
-
-%%% Local Variables:
-%%% mode: LaTeX
-%%% TeX-master: t
-%%% TeX-engine: luatex
-%%% End:
