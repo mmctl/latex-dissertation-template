@@ -31,21 +31,24 @@ is the primary setup assumed by this repository.
 1. Ensure that you have a reasonably recent TeX Live distribution installed; see
    [the TeX Live website](https://tug.org/texlive/).
 
-2. [Create your own repository from this template
-   repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template).
+2. [Create your own repository from this template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template).  
    If you do not want to use GitHub yourself, you can skip this step.
 
-3. [Clone or download your newly created
-   repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+3. [Clone or download your newly created repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).  
    If you do not want to use GitHub yourself, you can also clone or download
-   this repository directly (i.e., without first creating your own repository
-   from the template).
+   this repository directly, i.e., without first creating your own repository
+   from the template.
 
-4. Open the project in your TeX editor of choice.  
+4. As a quick first check, you can try compiling the project from the repository
+   root by running `latexmk` in a terminal. If everything is set up correctly,
+   this should produce the dissertation PDF. If you prefer, you can skip this
+   step and continue with your editor setup.
+
+5. Open the project in your TeX editor of choice.  
    If you do not yet have a preferred editor, you may first want to choose and
    set up [one](https://en.wikipedia.org/wiki/Comparison_of_TeX_editors).
 
-5. Configure your (editor’s) build setup to use LuaLaTeX (and/or `latexmk`).  
+6. Configure your (editor’s) build setup to use LuaLaTeX (and/or `latexmk`).  
    The simplest option is usually to perform a full build with `latexmk`, which
    typically just requires setting your (editor’s) build command to `latexmk`.
    However, a full `latexmk` build may invoke multiple runs of LuaLaTeX and
@@ -61,10 +64,10 @@ is the primary setup assumed by this repository.
    this command. If you use features such as TikZ externalization, you may
    additionally need `--shell-escape`.
 
-6. Compile `main.tex`.  
-   If everything is set up correctly, this should produce the dissertation PDF.  
+7. Compile `main.tex`.  
+   If everything is set up correctly, this should produce the dissertation PDF.
 
-7. Optionally, if your editor supports it, set `main.tex` as the main project file.  
+5. Optionally, if your editor supports it, set `main.tex` as the main project file.  
    In other words, make it the default file your editor compiles.
 
 ### Overleaf setup
