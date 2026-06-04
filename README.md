@@ -211,7 +211,7 @@ At a high level, the purpose of each included directory and file is as follows:
 
 - Document layout
   - Dissertation-oriented layout based on KOMA-Script’s `scrbook` class.
-  - B5, two-sided setup, with a built-in guess for binding correction.[^2]
+  - 170mmx240mm dimensions, two-sided setup, with a built-in guess for binding correction.[^2]
   - Configured headings, chapter openings, running heads, captions, margin
     equation tags, and microtypography.
 - Fonts, language, and quotations
