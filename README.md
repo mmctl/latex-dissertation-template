@@ -252,7 +252,6 @@ At a high level, the purpose of each included directory and file is as follows:
   - GitHub Actions workflow for automatic PDF builds and optional tagged/manual
   releases.
 
-
 [^2]: Binding correction depends on several factors, including the paper type,
     the number of pages, and the binding method. This template uses a default
     value of 5\,mm, which is only a rough estimate based on personal
@@ -262,4 +261,22 @@ At a high level, the purpose of each included directory and file is as follows:
 
 ## Acknowledgments
 
-WIP
+This template builds on information and guidance from many places: blog posts,
+StackExchange questions and answers, and, of course, the KOMA-Script
+documentation.
+
+One source that has been especially helpful and influential from the start is
+Tony Zorman's blog posts on typesetting his PhD thesis. Whether or not you end
+up using this template, I recommend checking them out. They give useful context
+and considerations for typesetting a dissertation. The particular posts I have
+in mind are:
+
+- [Dissertation typesetting considerations](https://tony-zorman.com/posts/phd-typesetting.html)
+- [Speeding up LaTeX compilation](https://tony-zorman.com/posts/speeding-up-latex.html)
+
+## Examples
+
+Here are some dissertations that use this template. They may be useful as
+references or inspiration when setting up your own dissertation:
+
+- <https://github.com/MM45/dissertation>
