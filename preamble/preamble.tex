@@ -1,6 +1,6 @@
 % Class %
 % KOMA-Script's scrbook (see https://ctan.org/pkg/koma-script)
-% Book/paper size: 170 mm x 240 mm; approx. 0.81 * A4 (see guidelines)
+% Book/paper size: 170 mm x 240 mm; approx. 0.81 * A4 (see university's guidelines)
 \documentclass[%
 paper=170mm:240mm,pagesize=auto, % format and setting correct page values
 fontsize=10pt,twoside, % Font size and sided-ness
@@ -24,8 +24,8 @@ headsepline=true,footsepline=false, % separation line between header/footer and 
 
 % Packages
 %% KOMA-Script
-\usepackage{scrlayer-scrpage} % Layer design of pages
-\usepackage{scrlayer-notecolumn} % Note columns (uses scrlayer-scrpage)
+% \usepackage{scrlayer-scrpage} % Layer design of pages
+% \usepackage{scrlayer-notecolumn} % Note columns (uses scrlayer-scrpage)
 
 %% Patching
 \usepackage{etoolbox} % see https://ctan.org/pkg/etoolbox
@@ -50,8 +50,8 @@ headsepline=true,footsepline=false, % separation line between header/footer and 
 \setkomafont{dedication}{\normalfont\normalcolor\itshape\Large}
 
 % Page styles
-% \pagestyle{headings} % Regular KOMA-Script headings style
-\pagestyle{scrheadings} % scrlayer-scrpage headings style (remaps headings and plain to scrheadings and plain.scrheadings)
+\pagestyle{headings} % Regular KOMA-Script headings style
+% \pagestyle{scrheadings} % scrlayer-scrpage headings style (remaps headings and plain to scrheadings and plain.scrheadings)
 \renewcommand*{\titlepagestyle}{empty}
 \renewcommand*{\partpagestyle}{empty}
 \renewcommand*{\chapterpagestyle}{plain}
@@ -232,42 +232,30 @@ atbegin={% Place regular captions above, side-captions top-left
 % Margins
 %% Margin notes
 %%% Set font size to footnotesize and align toward edge of text
-\newcommand*{\marginparnotefont}{%
+\newcommand*{\marnotefont}{%
   \normalfont\normalcolor\footnotesize%
-  \Ifthispageodd{\RaggedRight}{\RaggedLeft}%
 }
 
-\RedeclareNoteColumn[%
-font=\marginparnotefont,
-]{marginpar}
-
 %%% Margin note without footnote marker or label
-\NewDocumentCommand{\marnote}{s O{marginpar} m}{%
-  \IfBooleanTF{#1}{% Regular (expanded)
-    \makenote[#2]{%
-      #3%
-    }%
-  }{% Starred (detokenized)
-    \makenote*[#2]{%
-      #3%
-    }%
+\NewDocumentCommand{\marnote}{m}{%
+  \marginpar[\marnotefont\RaggedLeft#1]{%
+    \marnotefont\RaggedRight#1%
   }%
 }
 
 %%% Margin note with footnote marker and (optional) label, updates footnote counter
-\NewDocumentCommand{\marfootnote}{O{marginpar} m o}{%
-  \IfValueTF{#3}{%
+\NewDocumentCommand{\marfootnote}{m o}{%
+  \IfValueTF{#2}{%
     \refstepcounter{footnote}%
-    \label{#3}%
+    \label{#2}%
   }{%
     \stepcounter{footnote}%
   }%
   \textsuperscript{\thefootnote}%
-  \makenote[#1]{%
-    \textsuperscript{\thefootnote}~#2%
+  \marnote{%
+    \textsuperscript{\thefootnote}~#1%
   }%
 }%
-
 
 % Footnotes
 %% Separate multiple, consecutive footnotes by a separator (a comma without
